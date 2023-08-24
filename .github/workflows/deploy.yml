@@ -44,5 +44,5 @@ jobs:
           application_name: usuariosapi
           environment_name: usuariosapi-env
           version_label: ${{github.SHA}}
-          region: us-east-2a
+          region: us-east-2
           deployment_package: usuariosapi-1.0.jar
