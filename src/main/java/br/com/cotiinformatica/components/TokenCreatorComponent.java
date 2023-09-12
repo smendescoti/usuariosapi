@@ -22,18 +22,18 @@ public class TokenCreatorComponent {
 	/*
 	 * Método para fazermos a geração dos TOKENS JWT
 	 */
-	public String generateToken(String emailUsuario) throws Exception {
+	public String generateToken(String id) throws Exception {
 		return Jwts.builder()
-				.setSubject(emailUsuario) //email do usuário autenticado
+				.setSubject(id) //id do usuário autenticado
 				.setIssuedAt(new Date()) //data de geração do token
 				.signWith(SignatureAlgorithm.HS256, jwtSecret) //assinatura antifalsificação
 				.compact(); //finalizando e retornando o TOKEN gerado
 	}
 	
 	/*
-	 * Método para ler o email do usuário gravado no token
+	 * Método para ler o id do usuário gravado no token
 	 */
-	public String getEmailFromToken(String accessToken) throws Exception {
+	public String getIdFromToken(String accessToken) throws Exception {
 		return Jwts.parser()
 				.setSigningKey(jwtSecret)
 				.parseClaimsJws(accessToken)

@@ -62,7 +62,7 @@ public class UsuarioService {
 		response.setId(usuario.getId());
 		response.setNome(usuario.getNome());
 		response.setEmail(usuario.getEmail());
-		response.setAccessToken(tokenCreatorComponent.generateToken(usuario.getEmail()));
+		response.setAccessToken(tokenCreatorComponent.generateToken(usuario.getId().toString()));
 		response.setDataHoraAcesso(Instant.now());
 		response.setDataHoraExpiracao(Instant.now()); //TODO implementar a expiração do token
 		
@@ -158,13 +158,14 @@ public class UsuarioService {
 
 	public AtualizarDadosResponseDto atualizarDados(AtualizarDadosRequestDto dto, String accessToken) throws Exception {
 
-		//extrair o email do usuário gravado no token
-		String email = tokenCreatorComponent.getEmailFromToken(accessToken);
+		//extrair o id do usuário gravado no token
+		String id = tokenCreatorComponent.getIdFromToken(accessToken);
+		Usuario registro = usuarioRepository.findById(UUID.fromString(id)).get();
 		
 		//buscando o usuário no banco de dados através do ID
 		Optional<Usuario> optional = usuarioRepository.findById(dto.getId());
 		//verificando se nenhum usuário foi encontrado
-		if(optional.isEmpty() || !optional.get().getEmail().equals(email)) 
+		if(optional.isEmpty() || !optional.get().getEmail().equals(registro.getEmail())) 
 			throw new IllegalArgumentException("Usuário não encontrado. Verifique o id informado.");
 		
 		//capturar o usuário obtido do banco de dados
